@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  playnite_services:
+    container_name: playnite_services
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        UID: ${UID:-5000}
+        GID: ${GID:-5000}
+    image: playnite_services:latest
+    ports:
+      - 127.0.0.1:5000:5000/tcp
+      - 127.0.0.1:5001:5001/tcp
+    volumes:
+      - ./customSettings.json:/app/customSettings.json:ro
+      - ./appsettings.json:/app/appsettings.json:ro
+      - ./appsettings.Development.json:/app/appsettings.Development.json:ro
+      - db:/db
+    restart: unless-stopped
+
+volumes:
+  db: {}
